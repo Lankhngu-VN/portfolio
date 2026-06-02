@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio - Trần Nhật Minh</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body, html {
+            width: 100%;
+            height: 100%;
+            overflow: hidden; 
+            background-color: #f0f2f5;
+        }
+
+        /* Navbar */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 40px;
+            background: #ffffff;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            height: 60px;
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 1000;
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .nav-left img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .nav-info h4 { font-size: 14px; color: #333; }
+        .nav-info span { font-size: 12px; color: #777; }
+
+        .nav-right {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .nav-item {
+            text-decoration: none;
+            color: #555;
+            font-size: 14px;
+            font-weight: 500;
+            padding: 8px 15px;
+            border-radius: 6px;
+            transition: all 0.3s;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-item:hover {
+            background: #f0f2f5;
+            color: #1a73e8;
+        }
+
+        .nav-item.active-nav {
+            background: #1a73e8;
+            color: white;
+        }
+
+        /* Container & Pages */
+        .page-container {
+            position: relative;
+            top: 60px;
+            height: calc(100vh - 60px);
+            width: 100%;
+        }
+
+        .page {
+            display: none;
+            width: 100%;
+            height: 100%;
+            overflow-y: auto;
+            position: absolute;
+            top: 0; left: 0;
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            padding: 40px 20px;
+            animation: fadeIn 0.4s ease-out forwards;
+        }
+
+        .page.active { display: block; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Backgrounds */
+        #home { background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1920&q=80'); }
+        #projects { background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=1920&q=80'); }
+        #project-detail { background-color: #8c8f94; } 
+        #summary { background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('https://images.unsplash.com/photo-1476610182048-b716b8518aae?auto=format&fit=crop&w=1920&q=80'); }
+
+        /* Card Chung */
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 40px;
+            max-width: 900px;
+            margin: 0 auto;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+
+        /* --- TRANG CHỦ --- */
+        .hero-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 20px;
+        }
+        .hero-text h4 { color: #34a853; font-size: 14px; letter-spacing: 1px; margin-bottom: 5px;}
+        .hero-text h1 { font-size: 32px; color: #222; margin-bottom: 10px; }
+        .hero-text p { font-size: 14px; color: #555; line-height: 1.6; max-width: 500px; margin-bottom: 15px;}
+        
+        .tags span {
+            display: inline-block;
+            background: #e8f0fe;
+            color: #1a73e8;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-right: 10px;
+            margin-bottom: 15px;
+        }
+
+        .avatar-large {
+            width: 140px;
+            height: 140px;
+            border-radius: 12px;
+            border: 4px solid #fff;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            object-fit: cover;
+        }
+
+        .btn-group { display: flex; gap: 15px; }
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+        }
+        .btn:hover { transform: translateY(-3px); box-shadow: 0 6px 15px rgba(0,0,0,0.2); }
+        .btn-primary { background: #1a73e8; color: white; }
+        .btn-success { background: #34a853; color: white; }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        .info-box {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 12px;
+            line-height: 1.6;
+        }
+        .info-box h3 { font-size: 16px; margin-bottom: 12px; display: flex; align-items: center; gap: 10px; color: #1a73e8;}
+        .info-box p { font-size: 14px; color: #444; text-align: justify;}
+
+        /* --- TRANG DANH MỤC DỰ ÁN --- */
+        .menu-title { text-align: center; margin-bottom: 30px; font-size: 24px; color: #222; }
+        .grid-projects {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+        .project-item {
+            background: white;
+            border: 1px solid #eee;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        .project-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            border-color: #1a73e8;
+        }
+        .project-num { font-size: 28px; font-weight: 700; color: #e8f0fe; margin-bottom: 10px;}
+        .project-item h4 { font-size: 14px; color: #333; line-height: 1.5;}
+
+        /* --- TRANG CHI TIẾT BÀI TẬP --- */
+        .detail-card { max-width: 1000px; }
+        .detail-header { border-bottom: 1px solid #eee; padding-bottom: 20px; margin-bottom: 20px;}
+        .detail-header h2 { color: #1a73e8; font-size: 24px; margin-top: 15px; }
+        .content-section h3 { font-size: 18px; color: #222; margin: 20px 0 10px 0;}
+        .content-section p { font-size: 15px; color: #444; line-height: 1.6;}
+        .content-section ol { padding-left: 20px; font-size: 15px; color: #444; line-height: 1.8;}
+        .content-section li { margin-bottom: 10px; }
+
+        /* --- TRANG TỔNG KẾT --- */
+        .summary-card { background: rgba(255,255,255,0.9); max-width: 800px; }
+        .summary-item {
+            background: white;
+            border-left: 4px solid #1a73e8;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-radius: 0 8px 8px 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        .footer-text { text-align: center; font-size: 12px; color: #888; margin-top: 30px; border-top: 1px solid #eee; padding-top: 15px;}
+
+        @media (max-width: 768px) {
+            .hero-section { flex-direction: column-reverse; text-align: center; gap: 20px;}
+            .info-grid { grid-template-columns: 1fr; }
+            .grid-projects { grid-template-columns: 1fr 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="nav-left">
+            <img src="https://ui-avatars.com/api/?name=Tran+Nhat+Minh&background=1a73e8&color=fff" alt="Avatar">
+            <div class="nav-info">
+                <h4>Trần Nhật Minh</h4>
+                <span>Portfolio K70</span>
+            </div>
+        </div>
+        <div class="nav-right">
+            <a class="nav-item active-nav" onclick="navTo('home', this)"><i class="fas fa-user"></i> <span>Về Bản Thân</span></a>
+            <a class="nav-item" onclick="navTo('projects', this)"><i class="fas fa-folder-open"></i> <span>Hồ Sơ Bài Tập</span></a>
+            <a class="nav-item" onclick="navTo('summary', this)"><i class="fas fa-star"></i> <span>Tổng Kết</span></a>
+        </div>
+    </nav>
+
+    <div class="page-container">
+
+        <div id="home" class="page active">
+            <div class="card">
+                <div class="hero-section">
+                    <div class="hero-text">
+                        <h4><i class="fas fa-graduation-cap"></i> SINH VIÊN VNU-UET</h4>
+                        <h1>Trần Nhật Minh</h1>
+                        <p>Đại học Công nghệ - ĐHQGHN.<br>Chuyên ngành Công nghệ Kỹ thuật Cơ điện tử.</p>
+                        
+                        <div class="tags">
+                            <span>Mã SV: 25021410</span>
+                            <span>Mã Lớp: VNU1001_E252018</span>
+                        </div>
+                        
+                        <div class="btn-group" style="margin-top: 20px;">
+                            <button class="btn btn-primary" onclick="navTo('projects', document.querySelectorAll('.nav-item')[1])">
+                                <i class="fas fa-folder"></i> Xem Bài Tập
+                            </button>
+                            <button class="btn btn-success" onclick="navTo('summary', document.querySelectorAll('.nav-item')[2])">
+                                <i class="fas fa-check-circle"></i> Xem Tổng Kết
+                            </button>
+                        </div>
+                    </div>
+                    <img src="https://ui-avatars.com/api/?name=Tran+Nhat+Minh&background=random&size=256" alt="Profile" class="avatar-large">
+                </div>
+
+                <div class="info-grid">
+                    <div class="info-box">
+                        <h3><i class="fas fa-lightbulb"></i> Mục tiêu học tập & định hướng phát triển</h3>
+                        <p>Mục tiêu học tập của em là nắm vững các kiến thức nền tảng về công nghệ số và trí tuệ nhân tạo, đồng thời biết cách vận dụng các công cụ số và AI để hỗ trợ học tập một cách hiệu quả và có trách nhiệm. Trong định hướng phát triển cá nhân, em mong muốn nâng cao khả năng tự học, làm việc nhóm và sử dụng công nghệ như một công cụ hỗ trợ tư duy, thay vì phụ thuộc hoàn toàn vào công nghệ.</p>
+                    </div>
+
+                    <div class="info-box">
+                        <h3><i class="fas fa-microchip"></i> Đam mê và sở thích</h3>
+                        <p>Là một người yêu thích khám phá học hỏi, mình luôn tìm kiếm những cơ hội để phát triển bản thân. Ngoài đam mê với các hệ thống tự động hoá và lập trình, mình còn rất yêu nghệ thuật nói chung và ban nhạc Ngọt nói riêng 🍭</p>
+                    </div>
+                </div>
+
+                <div class="info-box" style="width: 100%; border-top: 3px solid #34a853;">
+                    <h3 style="color: #34a853;"><i class="fas fa-briefcase"></i> Mục tiêu của Portfolio này</h3>
+                    <p>Portfolio này được xây dựng không chỉ nhằm mục đích tổng hợp toàn bộ quá trình học tập, các bài tập và sản phẩm thực hành trong môn học mà còn là nơi phản ánh sự tiến bộ của bản thân thông qua từng nội dung, đồng thời là nơi lưu trữ sản phẩm cá nhân để dễ dàng truy cập và chia sẻ.</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="projects" class="page">
+            <div class="card">
+                <h2 class="menu-title">Danh Mục Bài Tập Thực Hành</h2>
+                <div class="grid-projects">
+                    <div class="project-item" onclick="openDetail(1)">
+                        <div class="project-num">01</div>
+                        <h4>Thao tác cơ bản với tệp tin và thư mục</h4>
+                    </div>
+                    <div class="project-item" onclick="openDetail(2)">
+                        <div class="project-num">02</div>
+                        <h4>Tìm kiếm và đánh giá thông tin học thuật</h4>
+                    </div>
+                    <div class="project-item" onclick="openDetail(3)">
+                        <div class="project-num">03</div>
+                        <h4>Viết Prompt hiệu quả cho học tập</h4>
+                    </div>
+                    <div class="project-item" onclick="openDetail(4)">
+                        <div class="project-num">04</div>
+                        <h4>Hợp tác trực tuyến & Làm việc nhóm</h4>
+                    </div>
+                    <div class="project-item" onclick="openDetail(5)">
+                        <div class="project-num">05</div>
+                        <h4>Sáng tạo nội dung với AI tạo sinh</h4>
+                    </div>
+                    <div class="project-item" onclick="openDetail(6)">
+                        <div class="project-num">06</div>
+                        <h4>Sử dụng AI có trách nhiệm</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+<div id="project-detail-1" class="page">
+            <div class="card detail-card">
+                <button class="btn btn-outline" style="border:1px solid #ccc; background:none; margin-bottom: 20px;" onclick="navTo('projects', document.querySelectorAll('.nav-item')[1])"><i class="fas fa-arrow-left"></i> Quay lại Menu</button>
+                
+                <div class="detail-header">
+                    <h2 id="detail-title">Bài 1: Thao tác cơ bản với tệp tin và thư mục </h2>
+                </div>
+                
+                <div class="content-section">
+                    
+                    <h3>I. Mục tiêu bài tập</h3>
+                    <ul style="padding-left: 20px; line-height: 1.8; color: #444; margin-bottom: 30px;">
+                        <li>Làm quen với việc sử dụng File Explorer trong hệ điều hành Windows.</li>
+                        <li>Thực hành các thao tác cơ bản với tệp tin và thư mục như: tạo mới, đổi tên, sao chép, di chuyển, xóa và khôi phục dữ liệu.</li>
+                        <li>Hình thành thói quen tổ chức và quản lý dữ liệu khoa học trên máy tính cá nhân.</li>
+                    </ul>
+
+                    <hr style="border: 0; border-top: 1px dashed #ccc; margin: 30px 0;">
+
+                    <h3>II. Nội dung và các bước thực hiện</h3>
+                    <ol style="padding-left: 20px; line-height: 1.8; color: #444; margin-bottom: 30px;">
+                        <li><strong>Mở File Explorer:</strong> Nhấn tổ hợp phím Windows + E hoặc nhấp vào biểu tượng thư mục màu vàng trên thanh tác vụ.</li>
+                        <li><strong>Truy cập ổ đĩa/thư mục:</strong> Ở cột bên trái, nhấp vào This PC, sau đó nhấp đúp vào một ổ đĩa không phải ổ hệ thống (ví dụ: ổ D: hoặc E:). Nếu chỉ có ổ C:, hãy vào thư mục Documents.</li>
+                        <li><strong>Tạo thư mục mới:</strong> Nhấp chuột phải vào một khoảng trống -> chọn New -> Folder. Đặt tên thư mục là ThucHanh_hotensinhvien (ví dụ: ThucHanh_TranNhatMinh). Nhấn Enter.</li>
+                        <li><strong>Vào thư mục vừa tạo:</strong> Nhấp đúp vào thư mục ThucHanh_TranNhatMinh.</li>
+                        <li><strong>Tạo tệp tin văn bản:</strong> Nhấp chuột phải vào khoảng trống -> New -> Text Document. Đặt tên là GhiChu.txt. Nhấn Enter.</li>
+                        <li><strong>Đổi tên tệp tin:</strong> Nhấp chuột phải vào tệp GhiChu.txt -> chọn Rename. Đổi tên thành GhiChuQuanTrong.txt. Nhấn Enter.</li>
+                        <li><strong>Tạo thư mục con:</strong> Trong thư mục ThucHanh_TranNhatMinh, nhấp chuột phải -> New -> Folder. Đặt tên là TaiLieu.</li>
+                        <li><strong>Sao chép tệp tin (Copy & Paste):</strong>
+                            <ul style="padding-left: 20px; list-style-type: circle;">
+                                <li>Nhấp chuột phải vào tệp GhiChuQuanTrong.txt -> chọn Copy (hoặc chọn tệp rồi nhấn Ctrl + C).</li>
+                                <li>Nhấp đúp vào thư mục TaiLieu, nhấp chuột phải vào khoảng trống bên trong -> chọn Paste (hoặc nhấn Ctrl + V). Bây giờ bạn có một bản sao của tệp trong thư mục TaiLieu.</li>
+                            </ul>
+                        </li>
+                        <li><strong>Di chuyển tệp tin (Cut & Paste):</strong>
+                            <ul style="padding-left: 20px; list-style-type: circle;">
+                                <li>Quay lại thư mục ThucHanh_TranNhatMinh. Tạo một tệp mới tên là DiChuyen.txt.</li>
+                                <li>Nhấp chuột phải vào tệp DiChuyen.txt -> chọn Cut (hoặc chọn tệp rồi nhấn Ctrl + X).</li>
+                                <li>Nhấp đúp vào thư mục TaiLieu, nhấp chuột phải vào khoảng trống -> chọn Paste (hoặc nhấn Ctrl + V). Tệp gốc đã biến mất khỏi vị trí cũ và chỉ còn ở vị trí mới.</li>
+                            </ul>
+                        </li>
+                        <li><strong>Xóa tệp tin:</strong> Trong thư mục TaiLieu, nhấp chuột phải vào tệp GhiChuQuanTrong.txt -> chọn Delete. Tệp sẽ được chuyển vào Thùng rác (Recycle Bin).</li>
+                        <li><strong>Xóa vĩnh viễn:</strong> Chọn tệp DiChuyen.txt, nhấn giữ phím Shift và nhấn phím Delete. Một cảnh báo sẽ hiện ra. Nếu đồng ý, tệp sẽ bị xóa vĩnh viễn mà không qua Thùng rác.</li>
+                        <li><strong>Khôi phục từ Thùng rác:</strong> Tìm biểu tượng Recycle Bin trên màn hình nền, nhấp đúp để mở. Tìm tệp GhiChuQuanTrong.txt đã xóa, nhấp chuột phải vào nó và chọn Restore. Tệp sẽ quay trở lại vị trí ban đầu.</li>
+                    </ol>
+
+                    <hr style="border: 0; border-top: 1px dashed #ccc; margin: 30px 0;">
+
+                    <h3>III. Nhận xét và đánh giá</h3>
+                    <p style="text-align: justify; margin-bottom: 30px;">Qua bài thực hành này, em đã nắm vững các thao tác cơ bản với tệp tin và thư mục trong hệ điều hành Windows. Những kỹ năng này rất cần thiết cho việc học tập, lưu trữ và quản lý dữ liệu một cách khoa học và hiệu quả.</p>
+
+                    <hr style="border: 0; border-top: 1px dashed #ccc; margin: 30px 0;">
+
+            <h3>IV. Sản phẩm cuối cùng</h3>
+                <div style="width: 100%; height: 700px; margin-top: 15px; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.1); border: 1px solid #ddd;">
+                    <iframe src="https://docs.google.com/document/d/1dhK1OnB2zaYK_8Csg3vmON6MYGhYIN0J/preview" width="100%" height="100%" style="border: none;" allow="autoplay"></iframe>
+                </div>
+                                    
+                </div>
+            </div>
+        </div>
+   <div id="project-detail-2" class="page">
+            <div class="card detail-card">
+                <button class="btn btn-outline" style="border:1px solid #ccc; background:none; margin-bottom: 20px;" onclick="navTo('projects', document.querySelectorAll('.nav-item')[1])"><i class="fas fa-arrow-left"></i> Quay lại Menu</button>
+                
+                <div class="detail-header">
+                    <h2>Bài 2: Tìm kiếm và đánh giá thông tin học thuật</h2>
+                </div>
+                
+                <div class="content-section">
+                    
+                    <h3>I. Mục tiêu bài tập</h3>
+                    <ul style="padding-left: 20px; line-height: 1.8; color: #444; margin-bottom: 30px;">
+                        <li>Phát triển kỹ năng tìm kiếm thông tin học thuật phục vụ học tập và nghiên cứu.</li>
+                        <li>Biết cách đánh giá mức độ tin cậy của các nguồn thông tin khác nhau.</li>
+                        <li>Hình thành tư duy chọn lọc và sử dụng tài liệu tham khảo một cách khoa học.</li>
+                    </ul>
+
+                    <hr style="border: 0; border-top: 1px dashed #ccc; margin: 30px 0;">
+
+                    <h3>II. Chủ đề nghiên cứu</h3>
+                    <ul style="padding-left: 20px; line-height: 1.8; color: #444; margin-bottom: 30px;">
+                        <li>Ảnh hưởng của Trí tuệ Nhân tạo sinh tạo (Generative AI) đến tính liêm chính học thuật trong giáo dục đại học.</li>
+                    </ul>
+
+                    <hr style="border: 0; border-top: 1px dashed #ccc; margin: 30px 0;">
+
+                    <h3>III. Phạm vi và phương pháp tìm kiếm</h3>
+                    <p style="font-weight: 600; margin-bottom: 10px; color: #222;">Để đảm bảo tính đa chiều và độ tin cậy, trong quá trình tìm kiếm em đã sử dụng 5 loại nguồn khác nhau, bao gồm:</p>
+                    <ul style="padding-left: 20px; line-height: 1.8; color: #444; margin-bottom: 20px;">
+                        <li>Cơ sở dữ liệu học thuật: Google Scholar, ResearchGate</li>
+                        <li>Tạp chí khoa học chuyên ngành có bình duyệt (Peer-reviewed Journals)</li>
+                        <li>Sách chuyên khảo (Monographs/Academic Books)</li>
+                        <li>Các tài liệu mở trên internet: báo cáo từ các tổ chức quốc tế (Như UNESCO,...)</li>
+                        <li>Các nguồn bổ sung (báo cáo kỹ thuật): Dữ liệu từ các tổ chức công nghệ giáo dục</li>
+                    </ul>
+                    
+                    <p style="font-weight: 600; margin-bottom: 10px; color: #222;">Các từ khoá sử dụng:</p>
+                    <ul style="padding-left: 20px; line-height: 1.8; color: #444; margin-bottom: 30px;">
+                        <li>Từ khóa tiếng Anh: "Generative AI", "ChatGPT in higher education", "academic integrity", "AI plagiarism", "student cheating AI".</li>
+                        <li>Từ khóa tiếng Việt: "Trí tuệ nhân tạo giáo dục đại học", "liêm chính học thuật", "đạo văn AI".</li>
+                        <li>Toán tử tìm kiếm (Boolean operators): Sử dụng các cụm từ chính xác với dấu ngoặc kép ("academic integrity" AND "ChatGPT") để thu hẹp kết quả trên các cơ sở dữ liệu.</li>
+                    </ul>
+
+                    <hr style="border: 0; border-top: 1px dashed #ccc; margin: 30px 0;">
+
+                    <h3>IV. Nhận xét và kết luận</h3>
+                    <p style="text-align: justify; margin-bottom: 15px; line-height: 1.8; color: #444;">Qua quá trình tìm kiếm và đánh giá tài liệu, em nhận thấy các bài báo khoa học và sách chuyên khảo có độ tin cậy cao do được xuất bản và kiểm duyệt bởi các tạp chí và nhà xuất bản uy tín, có quy trình đánh giá chuyên ngành bởi các chuyên gia. Các tài liệu có nguồn mở trên Internet cũng có giá trị tham khảo nếu đến từ những tổ chức lớn hay các trường đại học danh tiếng.</p>
+                    <p style="text-align: justify; margin-bottom: 30px; line-height: 1.8; color: #444;">Bài tập này đã giúp em nâng cao khả năng chọn lọc thông tin, biết cách phân biệt các nguồn thông tin thiếu độ tin cậy và hỗ trợ phục vụ tốt hơn cho học tập cũng như nghiên cứu.</p>
+
+                    <hr style="border: 0; border-top: 1px dashed #ccc; margin: 30px 0;">
+
+            <h3>IV. Sản phẩm cuối cùng</h3>
+                <div style="width: 100%; height: 700px; margin-top: 15px; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.1); border: 1px solid #ddd;">
+                    <iframe src="https://docs.google.com/document/d/1GZ1DUFxe1NXw3mRT9YFTHnyC4S4uhrf7/preview" width="100%" height="100%" style="border: none;" allow="autoplay"></iframe>
+                </div>
+                    
+                </div>
+            </div>
+        </div>
+    <div id="project-detail-3" class="page">
+            <div class="card detail-card">
+                <button class="btn btn-outline" style="border:1px solid #ccc; background:none; margin-bottom: 20px;" onclick="navTo('projects', document.querySelectorAll('.nav-item')[1])"><i class="fas fa-arrow-left"></i> Quay lại Menu</button>
+                
+                <div class="detail-header">
+                    <h2>Bài 3: Viết Prompt hiệu quả cho các tác vụ học tập</h2>
+                </div>
+                
+                <div class="content-section">
+                    
+                    <h3>I. Mục tiêu</h3>
+                    <p style="text-align: justify; margin-bottom: 30px; line-height: 1.8; color: #444;">Bài tập nhằm phát triển kỹ năng viết prompt hiệu quả để tận dụng tối đa khả năng của các mô hình ngôn ngữ lớn như ChatGPT hay Gemini trong học tập. Qua đó, sinh viên hiểu được tầm quan trọng của việc đặt câu hỏi đúng, rõ ràng và có cấu trúc khi sử dụng AI.</p>
+
+                    <hr style="border: 0; border-top: 1px dashed #ccc; margin: 30px 0;">
+
+                    <h3>II. Nội dung thực hiện</h3>
+                    <ul style="padding-left: 20px; line-height: 1.8; color: #444; margin-bottom: 30px; list-style-type: none;">
+                        <li><strong>Tác vụ 1:</strong> Tóm tắt một bài đọc/tài liệu học thuật (Chủ đề: Ảnh hưởng của AI trong giáo dục)</li>
+                        <li><strong>Tác vụ 2:</strong> Giải thích một khái niệm phức tạp (Chủ đề: Công nghệ Blockchain)</li>
+                        <li><strong>Tác vụ 3:</strong> Tạo bộ câu hỏi ôn tập cho một chủ đề (Chủ đề: Quá trình Quang hợp)</li>
+                    </ul>
+
+                    <hr style="border: 0; border-top: 1px dashed #ccc; margin: 30px 0;">
+
+                    <h3>III. So sánh và phân tích hiệu quả các prompt</h3>
+                    <p style="text-align: justify; margin-bottom: 30px; line-height: 1.8; color: #444;">Qua việc thử nghiệm và đối chiếu kết quả, có thể rút ra kết luận rằng <strong>chất lượng đầu ra của AI phụ thuộc trực tiếp vào mức độ chi tiết và cấu trúc logic của đầu vào</strong>. Các prompt nâng cao đạt hiệu quả vượt trội nhờ áp dụng các kỹ thuật prompt engineering như role prompting và định hướng cấu trúc đầu ra.</p>
+                    
+                    <hr style="border: 0; border-top: 1px dashed #ccc; margin: 30px 0;">
+
+                    <h3>IV. Nguyên tắc và mẹo viết prompt hiệu quả</h3>
+                    <p style="text-align: justify; margin-bottom: 15px; line-height: 1.8; color: #444;">Từ quá trình thực hành trên, tôi xin tổng hợp mô hình <strong>4 chữ C</strong> làm nguyên tắc cốt lõi khi tương tác với LLMs phục vụ học tập:</p>
+                    
+                    <ul style="padding-left: 20px; line-height: 1.8; color: #444; margin-bottom: 20px;">
+                        <li><strong>Context (Bối cảnh):</strong> Luôn cho AI biết bạn là ai, bạn đang học môn gì, ở trình độ nào và mục đích sử dụng kết quả này để làm gì.</li>
+                        <li><strong>Character (Vai trò):</strong> Gắn một "chức danh" cho AI (Giáo sư, Gia sư, Nhà phê bình) để nhận được góc nhìn và văn phong phù hợp nhất.</li>
+                        <li><strong>Constraints (Giới hạn):</strong> Đưa ra các rào cản cụ thể về độ dài (số từ, số đoạn), loại bỏ những thông tin không mong muốn (VD: "Không dùng thuật ngữ chuyên ngành").</li>
+                        <li><strong>Clear Format (Định dạng rõ ràng):</strong> Cung cấp biểu mẫu hoặc ví dụ về cách bạn muốn thông tin được trình bày (Bảng biểu, Markdown, Danh sách gạch đầu dòng).</li>
+                    </ul>
+
+                    <p style="font-weight: 600; margin-bottom: 10px; color: #222;">Mẹo nhỏ bổ sung:</p>
+                    <ul style="padding-left: 20px; line-height: 1.8; color: #444; margin-bottom: 30px;">
+                        <li><strong>Iterative Refinement (Tinh chỉnh lặp lại):</strong> Đừng mong đợi prompt đầu tiên sẽ hoàn hảo. Hãy xem kết quả, nếu thấy AI làm sai ý nào, hãy yêu cầu nó sửa đổi ngay trong đoạn chat đó (Ví dụ: <em>"Ví dụ này hơi khó hiểu, hãy đưa ra một ví dụ khác liên quan đến nấu ăn"</em>).</li>
+                        <li><strong>Yêu cầu tính phản biện:</strong> Để học sâu hơn, hãy dùng prompt: <em>"Tôi đang hiểu khái niệm này theo cách [A]. Hãy chỉ ra những lỗ hổng trong tư duy của tôi."</em></li>
+                    </ul>
+
+                    <hr style="border: 0; border-top: 1px dashed #ccc; margin: 30px 0;">
+
+                    <h3>V. Nhận xét và kết luận</h3>
+                    <p style="text-align: justify; margin-bottom: 15px; line-height: 1.8; color: #444;"><strong>Nhận xét:</strong> Qua quá trình thử nghiệm các mức độ khác nhau, tôi nhận thấy cách thiết lập câu lệnh (prompt) quyết định trực tiếp đến chất lượng đầu ra của AI. Prompt càng chi tiết và đúng trọng tâm, kết quả trả về càng bám sát yêu cầu của bài toán.</p>
+                    <p style="text-align: justify; margin-bottom: 30px; line-height: 1.8; color: #444;"><strong>Kết luận:</strong> Tóm lại, bài tập này cho thấy AI suy cho cùng vẫn chỉ là công cụ. Hiệu quả thực sự nằm ở tư duy logic và cách đặt vấn đề của người học. Việc rèn luyện kỹ năng prompt không chỉ giúp khai thác tối đa thế mạnh của AI mà còn rèn cho tôi tính chủ động, đồng thời đảm bảo ranh giới của sự minh bạch và liêm chính học thuật.</p>
+
+                    <hr style="border: 0; border-top: 1px dashed #ccc; margin: 30px 0;">
+
+            <h3>IV. Sản phẩm cuối cùng</h3>
+                <div style="width: 100%; height: 700px; margin-top: 15px; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.1); border: 1px solid #ddd;">
+                    <iframe src="https://docs.google.com/document/d/10bNB85kM8KhpG8uZVKnHTtrv8ZAYFXP9/preview" width="100%" height="100%" style="border: none;" allow="autoplay"></iframe>
+                </div>
+
+                </div>
+            </div>
+        </div>    
+    <div id="project-detail-4" class="page">
+            <div class="card detail-card">
+                <button class="btn btn-outline" style="border:1px solid #ccc; background:none; margin-bottom: 20px;" onclick="navTo('projects', document.querySelectorAll('.nav-item')[1])"><i class="fas fa-arrow-left"></i> Quay lại Menu</button>
+                
+                <div class="detail-header">
+                    <h2>Bài 4: Giao tiếp và hợp tác trong môi trường số</h2>
+                    <p style="color: #666; font-size: 16px; margin-top: 5px;">Sử dụng công cụ hợp tác trực tuyến cho dự án nhóm.</p>
+                </div>
+                
+                <div class="content-section">
+                    
+                    <h3>I. Mục tiêu</h3>
+                    <p style="text-align: justify; margin-bottom: 30px; line-height: 1.8; color: #444;">Bài tập nhằm giúp em làm quen và thành thạo việc sử dụng các công cụ hợp tác trực tuyến để quản lý và thực hiện dự án nhóm một cách hiệu quả. Qua đó, em rèn luyện kỹ năng làm việc nhóm, phối hợp và giao tiếp trong môi trường số.</p>
+
+                    <hr style="border: 0; border-top: 1px dashed #ccc; margin: 30px 0;">
+
+                    <h3>II. Nội dung thực hiện</h3>
+                    
+                    <p style="font-weight: 600; font-style: italic; margin-bottom: 10px; color: #222;">1. Lựa chọn dự án nhóm</p>
+                    <p style="text-align: justify; margin-bottom: 20px; line-height: 1.8; color: #444;">Sau khi thảo luận, nhóm thống nhất sẽ thực hiện 1 dự án nhỏ là: <strong>"Thiết kế và lập trình một hệ thống cơ điện tử cơ bản"</strong>.</p>
+                    
+                    <p style="font-weight: 600; font-style: italic; margin-bottom: 10px; color: #222;">2. Các công cụ hợp tác trực tuyến được sử dụng</p>
+                    <p style="text-align: justify; margin-bottom: 10px; line-height: 1.8; color: #444;">Để đảm bảo quá trình làm việc được hiệu quả, nhóm đã thống nhất sử dụng ít nhất ba công cụ hợp tác trực tuyến thuộc ba nhóm chức năng khác nhau gồm:</p>
+                    <ul style="padding-left: 20px; line-height: 1.8; color: #444; margin-bottom: 20px;">
+                        <li><strong>Quản lý dự án:</strong> Trello</li>
+                        <li><strong>Soạn thảo cộng tác:</strong> Google Docs/Sheets</li>
+                        <li><strong>Lưu trữ tệp tin:</strong> Google Drive</li>
+                        <li><strong>Giao tiếp nhóm:</strong> Discord</li>
+                    </ul>
+
+                    <p style="font-weight: 600; font-style: italic; margin-bottom: 10px; color: #222;">3. Thiết lập không gian làm việc chung</p>
+                    <ul style="padding-left: 20px; line-height: 1.8; color: #444; margin-bottom: 10px;">
+                        <li>Em tạo một bảng làm việc trên Trello cho dự án nhóm.</li>
+                        <li>Các cột chính được thiết lập gồm: Liệt kê các nhiệm vụ cần thực hiện - Nhiệm vụ đang được làm - Nhiệm vụ hoàn thành nhưng chờ kiểm tra - Nhiệm vụ đã hoàn thành.</li>
+                        <li>Em mời tất cả thành viên trong nhóm tham gia Trello bằng email.</li>
+                    </ul>
+                    <p style="text-align: justify; margin-bottom: 20px; line-height: 1.8; color: #444;">Đồng thời, em tạo một thư mục chung trên Google Drive, chia sẻ quyền chỉnh sửa cho các thành viên và đặt liên kết tài liệu Google Docs trong Trello để thuận tiện truy cập.</p>
+
+                    <p style="font-weight: 600; font-style: italic; margin-bottom: 10px; color: #222;">4. Minh họa quá trình thực hiện</p>
+                    <p style="text-align: justify; margin-bottom: 10px; line-height: 1.8; color: #444;">Trong quá trình làm bài, em đã chụp ảnh màn hình minh họa:</p>
+                    <ul style="padding-left: 20px; line-height: 1.8; color: #444; margin-bottom: 10px;">
+                        <li>Giao diện bảng Trello và các nhiệm vụ được phân công.</li>
+                        <li>Tài liệu Google Docs đang được chỉnh sửa chung.</li>
+                        <li>Thư mục lưu trữ dự án trên Google Drive.</li>
+                    </ul>
+                    <p style="text-align: justify; margin-bottom: 30px; line-height: 1.8; color: #444;">Các hình ảnh này được đính kèm để minh chứng cho quá trình sử dụng công cụ hợp tác trực tuyến theo yêu cầu của bài tập.</p>
+
+                    <hr style="border: 0; border-top: 1px dashed #ccc; margin: 30px 0;">
+
+                    <h3>III. Nhận xét và kết luận</h3>
+                    <p style="text-align: justify; margin-bottom: 15px; line-height: 1.8; color: #444;"><strong>Nhận xét:</strong> Thông qua việc sử dụng các công cụ hợp tác trực tuyến, em nhận thấy việc quản lý dự án nhóm trở nên rõ ràng, khoa học và hiệu quả hơn. Các công cụ giúp nhóm theo dõi tiến độ, phối hợp công việc và trao đổi thông tin thuận tiện, hạn chế nhầm lẫn và chậm trễ.</p>
+                    <p style="text-align: justify; margin-bottom: 30px; line-height: 1.8; color: #444;"><strong>Kết luận:</strong> Bài tập giúp em rèn luyện kỹ năng làm việc nhóm trong môi trường số và nâng cao khả năng sử dụng các công cụ công nghệ phục vụ học tập. Việc thành thạo các công cụ hợp tác trực tuyến là kỹ năng cần thiết đối với sinh viên trong bối cảnh học tập và làm việc hiện nay.</p>
+
+                    <hr style="border: 0; border-top: 1px dashed #ccc; margin: 30px 0;">
+
+            <h3>IV. Sản phẩm cuối cùng</h3>
+                <div style="width: 100%; height: 700px; margin-top: 15px; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.1); border: 1px solid #ddd;">
+                    <iframe src="https://docs.google.com/document/d/1bRL753wjkippQ5LdiiopUSFKAhZwc_nm/preview" width="100%" height="100%" style="border: none;" allow="autoplay"></iframe>
+                </div>
+                    
+                </div>
+            </div>
+        </div>   
+     <div id="project-detail-5" class="page">
+            <div class="card detail-card">
+                <button class="btn btn-outline" style="border:1px solid #ccc; background:none; margin-bottom: 20px;" onclick="navTo('projects', document.querySelectorAll('.nav-item')[1])"><i class="fas fa-arrow-left"></i> Quay lại Menu</button>
+                
+                <div class="detail-header">
+                    <h2>Bài 5: Sáng tạo nội dung số</h2>
+                    <p style="color: #666; font-size: 16px; margin-top: 5px;">Sử dụng AI tạo sinh để hỗ trợ sáng tạo nội dung.</p>
+                </div>
+                
+                <div class="content-section">
+                    
+                    <h3>I. Mục tiêu</h3>
+                    <p style="text-align: justify; margin-bottom: 30px; line-height: 1.8; color: #444;">Tạo ra một ấn phẩm trực quan, tóm tắt các ứng dụng cốt lõi của Trí tuệ nhân tạo (AI) trong lĩnh vực Kỹ thuật Cơ điện tử, hướng tới đối tượng là sinh viên và người đam mê công nghệ.</p>
+
+                    <hr style="border: 0; border-top: 1px dashed #ccc; margin: 30px 0;">
+
+                    <h3>II. Nội dung thực hiện</h3>
+                    
+                    <p style="font-weight: 600; font-style: italic; margin-bottom: 10px; color: #222;">1. Các công cụ AI tạo sinh được sử dụng</p>
+                    <p style="text-align: justify; margin-bottom: 10px; line-height: 1.8; color: #444;">Trong đó sử dụng ba nhóm công cụ AI tạo sinh gồm:</p>
+                    <ol style="padding-left: 20px; line-height: 1.8; color: #444; margin-bottom: 15px;">
+                        <li><strong>Google Gemini:</strong> Hỗ trợ lên ý tưởng, viết kịch bản và tóm tắt nội dung văn bản.</li>
+                        <li><strong>DALL-E 3 (thông qua ChatGPT Plus/Bing Image Creator):</strong> Hỗ trợ tạo lập hình ảnh minh họa kỹ thuật mang phong cách hiện đại.</li>
+                        <li><strong>Canva AI (Magic Design):</strong> Hỗ trợ sắp xếp bố cục (layout) và thiết kế đồ họa tổng thể.</li>
+                    </ol>
+                    <p style="text-align: justify; margin-bottom: 20px; line-height: 1.8; color: #444;">Việc kết hợp nhiều công cụ giúp em khai thác được thế mạnh riêng của từng loại AI trong quá trình sáng tạo nội dung.</p>
+
+                    <p style="font-weight: 600; font-style: italic; margin-bottom: 10px; color: #222;">2. Quá trình sử dụng AI hỗ trợ sáng tạo nội dung</p>
+                    
+                    <p style="font-weight: 600; margin-bottom: 10px; color: #444;">2.1. Giai đoạn 1: Lên ý tưởng và Viết nội dung với Google Gemini</p>
+                    <p style="text-align: justify; margin-bottom: 15px; line-height: 1.8; color: #444;">Ở giai đoạn đầu, Gemini được sử dụng để lên ý tưởng cho infographic, áp dụng những kiến thức đã học từ các bài trước, yêu cầu Gemini đóng vai một chuyên gia trong lĩnh vực Cơ điện tử để thông tin cho ra được chuyên nghiệp nhất có thể.</p>
+
+                    <p style="font-weight: 600; margin-bottom: 10px; color: #444;">2.2. Giai đoạn tạo hình ảnh minh họa</p>
+                    <p style="text-align: justify; margin-bottom: 10px; line-height: 1.8; color: #444;">DALL-E 3 được sử dụng để tạo hình ảnh minh họa cho infographic. Các prompt tập trung mô tả một cánh tay robot đang làm việc với mạch điện tử.</p>
+                    <p style="text-align: justify; margin-bottom: 15px; line-height: 1.8; color: #444;">Chọn ra bức ảnh phù hợp nhất trong các ảnh mà DALL-E 3 đã tạo ra và dùng phần mềm Photoshop để tự chỉnh sửa lại để tăng tính chuyên ngành.</p>
+
+                    <p style="font-weight: 600; margin-bottom: 10px; color: #444;">2.3. Giai đoạn thiết kế và hoàn thiện sản phẩm</p>
+                    <p style="text-align: justify; margin-bottom: 10px; line-height: 1.8; color: #444;">Canva AI được sử dụng để thiết kế infographic. Nội dung và hình ảnh do DALL-E 3 và Gemini tạo ra được đưa vào Canva, sau đó người thực hiện chủ động:</p>
+                    <ul style="padding-left: 20px; line-height: 1.8; color: #444; margin-bottom: 10px;">
+                        <li>Điều chỉnh màu sắc, font chữ</li>
+                        <li>Sắp xếp lại bố cục thông tin</li>
+                        <li>Lược bỏ các chi tiết dư thừa</li>
+                    </ul>
+                    <p style="text-align: justify; margin-bottom: 20px; line-height: 1.8; color: #444;">Dự án được thực hiện với nguyên tắc: <strong>AI đóng vai trò trợ lý phác thảo (chiếm khoảng 40% khối lượng), con người đóng vai trò biên tập, xác thực kiến thức kỹ thuật và hoàn thiện thẩm mỹ (chiếm 60%).</strong></p>
+
+                    <p style="font-weight: 600; font-style: italic; margin-bottom: 10px; color: #222;">3. So sánh kết quả từ các công cụ AI</p>
+                    <p style="text-align: justify; margin-bottom: 15px; line-height: 1.8; color: #444;">Trải nghiệm thực tế cho thấy mỗi công cụ AI đều có ưu, nhược điểm và mang lại tác động riêng biệt đến quy trình làm việc:</p>
+                    
+                    <ul style="padding-left: 20px; line-height: 1.8; color: #444; margin-bottom: 30px;">
+                        <li style="margin-bottom: 10px;"><strong>Google Gemini (Xử lý ngôn ngữ):</strong>
+                            <ul style="padding-left: 20px; list-style-type: circle; margin-top: 5px;">
+                                <li><strong>Ưu điểm:</strong> Phản hồi nhanh, hiểu tiếng Việt xuất sắc và phân tích logic.</li>
+                                <li><strong>Nhược điểm:</strong> Văn phong đôi khi còn rập khuôn, máy móc.</li>
+                                <li><strong>Tác động:</strong> Là "trợ lý nghiên cứu" đắc lực giúp phá vỡ bế tắc khi bắt đầu viết.</li>
+                            </ul>
+                        </li>
+                        <li style="margin-bottom: 10px;"><strong>DALL-E 3 (Tạo ảnh):</strong>
+                            <ul style="padding-left: 20px; list-style-type: circle; margin-top: 5px;">
+                                <li><strong>Ưu điểm:</strong> Bám sát yêu cầu, tính thẩm mỹ cao và phong cách đồng nhất.</li>
+                                <li><strong>Nhược điểm:</strong> Mắc lỗi "ảo giác" nặng với các bản vẽ kỹ thuật đòi hỏi độ chính xác.</li>
+                                <li><strong>Tác động:</strong> Cung cấp kho hình ảnh minh họa tuyệt vời, nhưng không thể thay thế kỹ sư CAD.</li>
+                            </ul>
+                        </li>
+                        <li style="margin-bottom: 10px;"><strong>Canva AI (Thiết kế):</strong>
+                            <ul style="padding-left: 20px; list-style-type: circle; margin-top: 5px;">
+                                <li><strong>Ưu điểm:</strong> Trực quan, giúp giảm 50% thời gian dựng bố cục cơ bản.</li>
+                                <li><strong>Nhược điểm:</strong> Thiết kế còn rập khuôn, thiếu đột phá và thỉnh thoảng lỗi chữ tiếng Việt.</li>
+                                <li><strong>Tác động:</strong> Biến người dùng từ "thợ thiết kế" thành "Giám đốc nghệ thuật" – tập trung vào khâu chọn lọc và tinh chỉnh.</li>
+                            </ul>
+                        </li>
+                    </ul>
+
+                    <hr style="border: 0; border-top: 1px dashed #ccc; margin: 30px 0;">
+
+                    <h3>III. Kết luận</h3>
+                    <p style="text-align: justify; margin-bottom: 30px; line-height: 1.8; color: #444;">Dự án đã giúp em làm chủ được chuỗi công cụ AI tạo sinh gồm Gemini, DALL-E 3 và Canva. Kết quả thu được không chỉ là một sản phẩm Infographic chất lượng, mà còn là sự nâng cấp trong tư duy hệ thống. AI là một đòn bẩy sức mạnh tuyệt vời, nhưng "điểm tựa" để tạo ra những nội dung thực sự có giá trị, độc bản và đáng tin cậy vẫn nằm ở tư duy phản biện và chuyên môn của con người.</p>
+
+                    <hr style="border: 0; border-top: 1px dashed #ccc; margin: 30px 0;">
+
+            <h3>IV. Sản phẩm cuối cùng</h3>
+                <div style="width: 100%; height: 700px; margin-top: 15px; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.1); border: 1px solid #ddd;">
+                    <iframe src="https://docs.google.com/document/d/1I_f5iwuoogGG6HpNPbcOKPAEeBWtdmyk/preview" width="100%" height="100%" style="border: none;" allow="autoplay"></iframe>
+                </div>
+                    
+                </div>
+            </div>
+        </div>
+    <div id="project-detail-6" class="page">
+            <div class="card detail-card">
+                <button class="btn btn-outline" style="border:1px solid #ccc; background:none; margin-bottom: 20px;" onclick="navTo('projects', document.querySelectorAll('.nav-item')[1])"><i class="fas fa-arrow-left"></i> Quay lại Menu</button>
+                
+                <div class="detail-header">
+                    <h2>Bài 6: An toàn và liêm chính học thuật trong môi trường số</h2>
+                    <p style="color: #666; font-size: 16px; margin-top: 5px;">Sử dụng AI có trách nhiệm trong học tập và nghiên cứu.</p>
+                </div>
+                
+                <div class="content-section">
+                    
+                    <h3>I. Mục tiêu</h3>
+                    <p style="text-align: justify; margin-bottom: 30px; line-height: 1.8; color: #444;">Bài tập này được thực hiện nhằm mục tiêu phát triển năng lực ứng dụng Trí tuệ Nhân tạo (AI) một cách có trách nhiệm, minh bạch và tuân thủ các chuẩn mực đạo đức trong học tập và nghiên cứu. Qua quá trình thực hiện, em có thể nhận thức sâu sắc ranh giới giữa việc khai thác AI như một công cụ hỗ trợ đắc lực với các hành vi vi phạm liêm chính học thuật. Đồng thời, đây cũng là nền tảng cốt lõi để tôi thiết lập một bộ quy tắc cá nhân về việc sử dụng AI chuẩn mực trong môi trường giáo dục đại học.</p>
+
+                    <hr style="border: 0; border-top: 1px dashed #ccc; margin: 30px 0;">
+
+                    <h3>II. Nội dung thực hiện</h3>
+                    
+                    <p style="font-weight: 600; font-size: 16px; margin-bottom: 10px; color: #222;">1. Nghiên cứu chính sách của trường đại học về việc sử dụng AI</p>
+                    <p style="text-align: justify; margin-bottom: 10px; line-height: 1.8; color: #444;">Thông qua việc tìm hiểu các quy định về liêm chính học thuật hiện hành tại các cơ sở giáo dục đại học lớn tại Việt Nam (tiêu biểu như Đại học Quốc gia Hà Nội và ĐH FPT), chính sách sử dụng Trí tuệ nhân tạo (AI) trong học tập và nghiên cứu thường được quy định xoay quanh các nguyên tắc cốt lõi sau:</p>
+                    <ul style="padding-left: 20px; line-height: 1.8; color: #444; margin-bottom: 20px;">
+                        <li><strong>AI là công cụ hỗ trợ, không phải tác giả:</strong> Sinh viên được phép sử dụng AI (như ChatGPT, Gemini) để tìm kiếm ý tưởng, lập dàn ý, tóm tắt tài liệu, hoặc kiểm tra lỗi ngữ pháp. Tuy nhiên, AI tuyệt đối không được coi là tác giả của bất kỳ công trình khoa học nào.</li>
+                        <li><strong>Minh bạch và trích dẫn bắt buộc:</strong> Mọi phần nội dung, ý tưởng, hoặc cấu trúc có sự can thiệp của AI đều phải được khai báo và trích dẫn rõ ràng theo chuẩn mực học thuật (APA, IEEE,...). Việc cố tình che giấu sử dụng AI bị xem là hành vi đạo văn và vi phạm liêm chính học thuật.</li>
+                        <li><strong>Trách nhiệm giải trình (Accountability):</strong> Sinh viên là người chịu trách nhiệm cuối cùng về tính chính xác, đạo đức và bản quyền của mọi thông tin có trong bài nộp, bất kể thông tin đó do AI tạo ra hay không.</li>
+                    </ul>
+
+                    <p style="font-weight: 600; font-size: 16px; margin-bottom: 10px; color: #222;">2. Thực hiện nhiệm vụ học tập với sự hỗ trợ của AI</p>
+                    
+                    <p style="font-weight: 600; margin-bottom: 5px; color: #444;">2.1. Mô tả nhiệm vụ học tập</p>
+                    <ul style="padding-left: 20px; line-height: 1.8; color: #444; margin-bottom: 15px;">
+                        <li><strong>Nhiệm vụ lựa chọn:</strong> Viết một bài tiểu luận ngắn (1500 từ).</li>
+                        <li><strong>Chủ đề:</strong> Tác động của Trí tuệ nhân tạo đến ngành Marketing số tại Việt Nam.</li>
+                    </ul>
+
+                    <p style="font-weight: 600; margin-bottom: 5px; color: #444;">2.2. Các prompt đã sử dụng</p>
+                    <ul style="padding-left: 20px; line-height: 1.8; color: #444; margin-bottom: 15px; list-style-type: none;">
+                        <li><strong>Prompt 1:</strong> <em>"Đóng vai một chuyên gia Marketing. Hãy lập cho tôi một dàn ý chi tiết cho bài tiểu luận dài 1500 từ về chủ đề: 'Tác động của AI đến ngành Marketing số tại Việt Nam hiện nay'. Dàn ý cần có tính logic và số liệu thực tế."</em></li>
+                        <li style="margin-top: 8px;"><strong>Prompt 2:</strong> <em>"Dựa vào phần 'Cá nhân hóa trải nghiệm' trong dàn ý trên, hãy viết một đoạn văn khoảng 250 từ phân tích cách AI giúp các sàn thương mại điện tử ở Việt Nam (như Shopee, Tiki) gợi ý sản phẩm cho người dùng."</em></li>
+                    </ul>
+
+                    <p style="font-weight: 600; margin-bottom: 5px; color: #444;">2.3. Đầu ra của AI cung cấp:</p>
+                    <p style="text-align: justify; margin-bottom: 15px; line-height: 1.8; color: #444;">AI cung cấp một dàn ý 3 phần: Mở bài (Thực trạng) - Thân bài (3 tác động chính: Cá nhân hóa trải nghiệm, Tối ưu hóa quảng cáo, Sáng tạo nội dung tự động) - Kết luận. Kèm theo gợi ý nhắc đến các công cụ như Chatbot, Programmatic Ads.<br>AI viết một đoạn văn khá mượt mà về thuật toán đề xuất (Recommendation systems), phân tích hành vi click, bỏ giỏ hàng để đưa ra sản phẩm phù hợp, giúp tăng tỷ lệ chuyển đổi (CR).</p>
+
+                    <p style="font-weight: 600; margin-bottom: 5px; color: #444;">2.4. Cách đánh giá, chỉnh sửa và tích hợp đầu ra của AI</p>
+                    <p style="text-align: justify; margin-bottom: 10px; line-height: 1.8; color: #444;">Sau khi nhận được đầu ra từ AI, tôi thực hiện các bước:</p>
+                    <ul style="padding-left: 20px; line-height: 1.8; color: #444; margin-bottom: 15px;">
+                        <li>Thay đổi các ngôn từ có phần "máy móc" của AI thành ngôn ngữ phù hợp với con người.</li>
+                        <li>Tự tìm các số liệu thực tế để tránh hiện tượng AI bị hallucination.</li>
+                        <li>Chỉnh sửa văn phong cho đồng nhất.</li>
+                    </ul>
+
+                    <p style="font-weight: 600; margin-bottom: 5px; color: #444;">2.5. Trích dẫn việc sử dụng AI</p>
+                    <p style="text-align: justify; margin-bottom: 10px; line-height: 1.8; color: #444;">Trong phần Phụ lục và Tài liệu tham khảo của bài tiểu luận, tôi bổ sung:</p>
+                    <ul style="padding-left: 20px; line-height: 1.8; color: #444; margin-bottom: 25px;">
+                        <li><em>Tuyên bố sử dụng AI:</em> "Trong quá trình thực hiện bài tiểu luận này, tác giả đã sử dụng mô hình ngôn ngữ lớn [Tên AI, ví dụ: ChatGPT 4.0 của OpenAI] để hỗ trợ lập dàn ý ban đầu và hiệu đính lỗi ngữ pháp. Toàn bộ lập luận, kiểm chứng dữ liệu và quyết định nội dung cuối cùng thuộc về tác giả."</li>
+                        <li><em>Trích dẫn chuẩn APA 7th Edition (Ví dụ):</em> OpenAI. (2024). <em>ChatGPT</em> (Phiên bản GPT-4) [Mô hình ngôn ngữ lớn]. https://chat.openai.com</li>
+                    </ul>
+
+                    <p style="font-weight: 600; font-size: 16px; margin-bottom: 10px; color: #222;">3. Phân tích các vấn đề đạo đức khi sử dụng AI trong học thuật</p>
+                    
+                    <p style="font-weight: 600; margin-bottom: 5px; color: #444;">3.1. Ranh giới giữa hỗ trợ hợp lý và gian lận học thuật</p>
+                    <p style="text-align: justify; margin-bottom: 10px; line-height: 1.8; color: #444;">AI được xem là hỗ trợ hợp lý khi giúp sinh viên gợi ý ý tưởng, dàn ý hoặc giải thích khái niệm. Tuy nhiên, việc sao chép nguyên văn nội dung do AI tạo ra và nộp như bài làm cá nhân có thể bị coi là gian lận học thuật.</p>
+                    
+                    <p style="font-weight: 600; margin-bottom: 5px; color: #444;">3.2. Quyền sở hữu trí tuệ và trích dẫn</p>
+                    <p style="text-align: justify; margin-bottom: 10px; line-height: 1.8; color: #444;">Nội dung do AI tạo ra không hoàn toàn là sản phẩm trí tuệ của người học. Vì vậy, nếu sử dụng AI, sinh viên cần khai báo rõ ràng và không coi nội dung đó là sáng tạo cá nhân hoàn toàn.</p>
+
+                    <p style="font-weight: 600; margin-bottom: 5px; color: #444;">3.3. Tác động đến quá trình học tập và phát triển kỹ năng</p>
+                    <p style="text-align: justify; margin-bottom: 25px; line-height: 1.8; color: #444;">Việc sử dụng AI đúng cách có thể giúp sinh viên học hiệu quả hơn. Tuy nhiên, nếu lạm dụng, sinh viên có thể trở nên phụ thuộc vào AI và giảm khả năng tư duy độc lập. Ba vấn đề trên có mối liên hệ với nhau, tuy nhiên trong thực tế người học đôi khi chưa nhận thức đầy đủ về sự liên kết này khi sử dụng AI.</p>
+
+                    <p style="font-weight: 600; font-size: 16px; margin-bottom: 10px; color: #222;">4. Bộ nguyên tắc cá nhân về sử dụng AI có trách nhiệm trong học tập</p>
+                    <p style="text-align: justify; margin-bottom: 10px; line-height: 1.8; color: #444;">Dựa trên các phân tích đạo đức trên, tôi tự thiết lập <strong>6 nguyên tắc cá nhân</strong> (Bộ nguyên tắc T.R.U.S.T.S) trong quá trình học tập:</p>
+                    <ol style="padding-left: 20px; line-height: 1.8; color: #444; margin-bottom: 30px;">
+                        <li><strong>T - Transparency (Minh bạch tuyệt đối):</strong> Luôn khai báo rõ ràng phần mềm AI nào đã được sử dụng, sử dụng cho công đoạn nào (lên ý tưởng, dịch thuật, hay sửa lỗi) trong các bài tập nộp cho giảng viên.</li>
+                        <li><strong>R - Responsibility (Chịu trách nhiệm cuối cùng):</strong> Tôi là người sở hữu bài viết, không phải AI. Tôi chịu trách nhiệm 100% về tính chính xác, tính hợp lý và hậu quả của mọi thông tin có trong bài.</li>
+                        <li><strong>U - Unbiased Verification (Kiểm chứng độc lập):</strong> Không bao giờ tin tưởng tuyệt đối vào "ảo giác" (Hallucination) của AI. Mọi số liệu, ngày tháng, tên riêng và trích dẫn do AI cung cấp phải được kiểm tra chéo (cross-check) với các nguồn tài liệu chính thống.</li>
+                        <li><strong>S - Security (Bảo mật thông tin):</strong> Không bao giờ nhập dữ liệu cá nhân nhạy cảm, dữ liệu chưa được công bố của nghiên cứu, hoặc tài sản trí tuệ của trường vào các khung chat AI công cộng.</li>
+                        <li><strong>T - Thinking First (Tư duy đi trước công cụ):</strong> Luôn tự suy nghĩ, vạch ra lập luận và dàn ý bằng đầu óc của mình trước khi mở công cụ AI lên để xin gợi ý. Không để AI định hướng tư duy của mình.</li>
+                        <li><strong>S - Skill Development (Phát triển kỹ năng):</strong> Chỉ dùng AI để làm những việc mang tính thủ công, lặp đi lặp lại. Phải tự mình thực hiện những công đoạn đòi hỏi tư duy phân tích sâu để không bị thui chột kỹ năng cốt lõi.</li>
+                    </ol>
+
+                    <hr style="border: 0; border-top: 1px dashed #ccc; margin: 30px 0;">
+
+                    <h3>III. Kết luận</h3>
+                    <p style="text-align: justify; margin-bottom: 30px; line-height: 1.8; color: #444;">Thông qua quá trình thực hiện bài tập này, tôi đã nhận thức sâu sắc tầm quan trọng của việc ứng dụng Trí tuệ Nhân tạo (AI) một cách có trách nhiệm trong học thuật. Dù mang lại những giá trị hỗ trợ to lớn, AI vẫn tiềm ẩn những rủi ro vi phạm liêm chính học thuật nếu bị lạm dụng. Do đó, việc nghiêm túc tuân thủ các chuẩn mực đạo đức, duy trì sự minh bạch và giữ vững tư duy độc lập của người học chính là chìa khóa để biến AI thành một trợ thủ đắc lực trong môi trường giáo dục đại học hiện đại.</p>
+
+                    <hr style="border: 0; border-top: 1px dashed #ccc; margin: 30px 0;">
+
+            <h3>IV. Sản phẩm cuối cùng</h3>
+                <div style="width: 100%; height: 700px; margin-top: 15px; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.1); border: 1px solid #ddd;">
+                    <iframe src="https://docs.google.com/document/d/16ARDiQ-Oqv78Xxzyhy68vX4HZR2E86Zs/preview" width="100%" height="100%" style="border: none;" allow="autoplay"></iframe>
+                </div>
+                    
+                </div>
+            </div>
+        </div>        
+  <div id="summary" class="page">
+            <div class="card summary-card">
+                <h2 class="menu-title">Tổng Kết Cuối Học Kỳ</h2>
+                
+                <!-- BẮT ĐẦU PHẦN THAY THẾ -->
+                <div class="summary-item">
+                    <h4>Trải nghiệm và cảm nhận cá nhân</h4>
+                    <p>Dự án Portfolio mang lại cho em cơ hội nhìn nhận lại toàn bộ quá trình học tập một cách hệ thống. Thay vì nộp từng bài tập rời rạc, việc xây dựng Portfolio buộc em phải xâu chuỗi kiến thức lại với nhau, từ những bước cơ bản nhất đến các sản phẩm hoàn thiện. Quá trình này không chỉ giúp em thấy rõ sự tiến bộ của bản thân mà còn rèn luyện tính kỷ luật, khả năng tự học. Đây thực sự là một bước "phản tư" (reflection) giúp em định vị được năng lực hiện tại của mình.</p>
+                </div>
+
+                <div class="summary-item">
+                    <h4>Kiến thức và kỹ năng đạt được</h4>
+                    <p>Thông qua dự án, em đã củng cố được kỹ năng quản lý tệp tin, lưu trữ dữ liệu và trình bày nội dung trên không gian số. Quan trọng hơn, em học được cách tổng hợp và hệ thống hóa thông tin sao cho logic, dễ đọc. Việc nhìn lại các bài cũ cũng giúp em rèn kỹ năng tự đánh giá, biết mình làm tốt ở đâu và cần "vá lỗi" ở đâu. Đặc biệt, em đã hình thành được tư duy sử dụng công cụ AI một cách đúng đắn: coi nó là trợ lý hỗ trợ tối ưu hóa việc học, thay vì để máy móc tư duy thay mình.</p>
+                </div>
+
+                <div class="summary-item">
+                    <h4>Điểm tâm đắc và thách thức gặp phải</h4>
+                    <p>Điều em ưng ý nhất là giờ đây toàn bộ kết quả học tập của mình đã được số hóa và gom về một "hub" duy nhất, cấu trúc rõ ràng và gửi link chia sẻ rất tiện lợi. Tuy nhiên, thách thức lớn nhất là khâu chọn lọc và sắp xếp nội dung. Việc ngồi rà soát lại các bài tập cũ, lên thứ tự trình bày và viết lại phần nhận xét tốn khá nhiều thời gian. Dù vậy, khó khăn này lại giúp em rèn luyện kỹ năng quản lý thời gian và tổ chức thông tin.</p>
+                </div>
+
+                <div class="summary-item">
+                    <h4>Định hướng trong tương lai</h4>
+                    <p>Dự án này cho em thấy rõ giá trị của việc lưu trữ và hệ thống hóa tài sản học tập cá nhân. Thời gian tới, em dự định sẽ tiếp tục cập nhật các dự án, bài tập mới vào Portfolio này. Em muốn biến nó thành một hồ sơ năng lực trực tuyến có giá trị lâu dài, phục vụ trực tiếp cho lộ trình học tập và công việc sau này.</p>
+                </div>
+                <!-- KẾT THÚC PHẦN THAY THẾ -->
+
+                <div class="footer-text">
+                    Trần Nhật Minh | Mã SV: 25021410<br>
+                    Trường Đại học Công nghệ - ĐHQGHN
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        function navTo(pageId, navElement) {
+            document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active-nav'));
+            document.getElementById(pageId).classList.add('active');
+            if(navElement) navElement.classList.add('active-nav');
+        }
+
+function openDetail(id) {
+            navTo('project-detail-' + id, document.querySelectorAll('.nav-item')[1]);
+        }
+    </script>
+</body>
+</html>
